@@ -66,10 +66,23 @@ def _logo_data_uri(carrier_id):
         _logo_uri_cache[carrier_id] = uri
         return uri
 
-    # PNG (including .svg.png and .wine.png): resize then encode
+    # PNG (including .svg.png and .wine.png): auto-crop then resize
     try:
         from PIL import Image
         img = Image.open(fpath).convert("RGBA")
+
+        # Auto-crop: use alpha channel to find actual logo content.
+        # Many logos sit on a large transparent canvas; cropping removes dead space.
+        r, g, b, a = img.split()
+        bbox = a.point(lambda x: 255 if x > 20 else 0).getbbox()
+        if bbox:
+            pad = 6  # small padding so logo doesn't touch edge
+            x0 = max(0, bbox[0] - pad)
+            y0 = max(0, bbox[1] - pad)
+            x1 = min(img.width,  bbox[2] + pad)
+            y1 = min(img.height, bbox[3] + pad)
+            img = img.crop((x0, y0, x1, y1))
+
         img.thumbnail((200, 60), Image.LANCZOS)
         buf = io.BytesIO()
         img.save(buf, format="PNG", optimize=True)
