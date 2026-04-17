@@ -35,7 +35,7 @@ LOGO_FILES = {
     "att":        "AT&T_logo_2016.svg.png",
     "vmo2":       "VIRGIN_MEDIA_O2_LOGO_SECONDARY_COLOUR_RGB-300x170-1.png",
     "odido":      "Odido_2023_Logo.png",
-    "vf_germany": "Vodafone_Germany-Logo.wine.png",
+    "vf_germany": "Vodafone new.png",
     "comcast":    "Comcast_logo_2000.svg",
     "globe":      "Globe-logo.png",
 }
